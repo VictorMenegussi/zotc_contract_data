@@ -1,0 +1,9 @@
+{
+    "[development]": {
+        "requires": {
+            "db": {
+                "kind": "hana"
+            }
+        }
+    }
+}
