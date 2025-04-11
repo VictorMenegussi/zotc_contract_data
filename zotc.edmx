@@ -1,0 +1,44 @@
+<edmx:Edmx xmlns:edmx="http://schemas.microsoft.com/ado/2007/06/edmx" xmlns:m="http://schemas.microsoft.com/ado/2007/08/dataservices/metadata" xmlns:sap="http://www.sap.com/Protocols/SAPData" Version="1.0">
+<edmx:DataServices m:DataServiceVersion="2.0">
+<Schema xmlns="http://schemas.microsoft.com/ado/2008/09/edm" Namespace="ZOTC_CONTRACT_DATA_SRV" xml:lang="en" sap:schema-version="1">
+<EntityType Name="ZOTC_CONTRACT_ATM_DATA" sap:content-version="1">
+<Key>
+<PropertyRef Name="Vbeln"/>
+<PropertyRef Name="Posnr"/>
+</Key>
+<Property Name="Vkorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Org." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sold-To Party" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Vbeln" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Sales Document" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Posnr" Type="Edm.String" Nullable="false" MaxLength="6" sap:unicode="false" sap:label="POSNR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Matnr" Type="Edm.String" Nullable="false" MaxLength="18" sap:unicode="false" sap:label="MATNR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Arktx" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="ARKTX" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Kmeng" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="KMENG" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Bstkd" Type="Edm.String" Nullable="false" MaxLength="35" sap:unicode="false" sap:label="BSTKD" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Erdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="ERDAT" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Fixmg" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="FIXMG" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Ernam" Type="Edm.String" Nullable="false" MaxLength="12" sap:unicode="false" sap:label="ERNAM" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Faksk" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="FAKSK" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Gbstk" Type="Edm.String" Nullable="false" MaxLength="1" sap:unicode="false" sap:label="GBSTK" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="GbstkDesc" Type="Edm.String" Nullable="false" MaxLength="40" sap:unicode="false" sap:label="GBSTK_DESC" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Netpr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="NETPR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Netwr" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="NETWR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Prsdt" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="PRSDT" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="VbelnSdr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="VBELN_SDR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="VbelnRdm" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="VBELN_RDM" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Fkdat" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="FKDAT" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="NetwrBilling" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="NETWR_BILLING" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="WaerkBilling" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="WAERK_BILLING" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Belnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="BELNR" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="NetwrAcc" Type="Edm.Decimal" Nullable="false" Precision="14" Scale="3" sap:unicode="false" sap:label="NETWR_ACC" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="WaerkAcc" Type="Edm.String" Nullable="false" MaxLength="5" sap:unicode="false" sap:label="WAERK_ACC" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Datab" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="DATAB" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Datbi" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="DATBI" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+</EntityType>
+<EntityContainer Name="ZOTC_CONTRACT_DATA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
+<EntitySet Name="ZOTC_CONTRACT_ATM_DATASet" EntityType="ZOTC_CONTRACT_DATA_SRV.ZOTC_CONTRACT_ATM_DATA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+</EntityContainer>
+<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="http://azsae1aap010.cs.ball.com:8001/sap/opu/odata/sap/ZOTC_CONTRACT_DATA_SRV/$metadata"/>
+<atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="http://azsae1aap010.cs.ball.com:8001/sap/opu/odata/sap/ZOTC_CONTRACT_DATA_SRV/$metadata"/>
+</Schema>
+</edmx:DataServices>
+</edmx:Edmx>

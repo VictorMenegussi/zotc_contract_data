@@ -1,6 +1,6 @@
 {
   "name": "getcontractatm",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An SAP Fiori application.",
   "keywords": [
     "ui5",
@@ -18,5 +18,11 @@
   "scripts": {
     "deploy-config": "npx -p @sap/ux-ui5-tooling fiori add deploy-config cf",
     "build:cf": "ui5 build preload --clean-dest --config ui5-deploy.yaml --include-task=generateCachebusterInfo"
+  },
+  "ui5": {
+    "dependencies": [
+      "@sap/ui5-builder-webide-extension",
+      "ui5-task-zipper"
+    ]
   }
 }

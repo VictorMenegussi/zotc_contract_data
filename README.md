@@ -23,3 +23,10 @@ File or Folder | Purpose
 ## Learn More
 
 Learn more at https://cap.cloud.sap/docs/get-started/.
+
+
+for hybrid testing, open tunnel, bind apps and add this into the connectivity bindings: (cdsrc-private)
+
+          "credentials": {
+            "onpremise_proxy_host": "localhost"
+          }

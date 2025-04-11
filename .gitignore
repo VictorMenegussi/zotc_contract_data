@@ -8,10 +8,12 @@ default-*.json
 gen/
 node_modules/
 target/
+app/*/dist/
 
 # Web IDE, App Studio
 .che/
 .gen/
+
 
 # MTA
 *_mta_build_tmp
