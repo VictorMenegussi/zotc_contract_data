@@ -3,7 +3,6 @@ using {contract.atm as db} from '../db/schema.cds';
 
 service OrderService {
     entity OrderItemDetails as projection on db.OrderItemDetails ;
-    entity AtmDocumentsEcc as projection on db.AtmDocumentsEcc;    
     function jobRetrieve() returns String;
 }
 
