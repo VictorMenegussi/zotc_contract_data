@@ -283,9 +283,3 @@ annotate service.OrderItemDetails with @(
         Deletable : false
     }
 );
-
-// Campos escondidos no Fiori UI
-annotate service.OrderItemDetails with {
-    Datab @UI.Hidden : true;
-    Datbi @UI.Hidden : true;
-};

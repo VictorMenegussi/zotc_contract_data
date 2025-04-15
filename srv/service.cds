@@ -27,8 +27,8 @@ annotate OrderService.OrderItemDetails with{
     Belnr             ;
     NetwrAcc           ;
     WaerkAcc           ;
-    Datab             ;
-    Datbi             ;
+    Datab         @title : 'Date Valid From'  ;
+    Datbi          @title : 'Date Valid To'    ;
     Vbeln             ;
     Posnr            ;
     Vkorg         @title : 'Sales Organization' ;
