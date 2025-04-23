@@ -21,7 +21,7 @@ annotate service.OrderItemDetails with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'Customer Number',
+                Label : 'Sold To',
                 Value : Kunnr
             },
             {
@@ -96,7 +96,7 @@ annotate service.OrderItemDetails with @(
             },
             {
                 $Type : 'UI.DataField',
-                Label : 'Rexam Bit Memo',
+                Label : 'Rexam Debit Memo',
                 Value : VbelnRdm
             },
             {
@@ -159,7 +159,7 @@ annotate service.OrderItemDetails with @(
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Customer Number',
+            Label : 'Sold To',
             Value : Kunnr
         },
         {
@@ -234,7 +234,7 @@ annotate service.OrderItemDetails with @(
         },
         {
             $Type : 'UI.DataField',
-            Label : 'Rexam Bit Memo',
+            Label : 'Rexam Debit Memo',
             Value : VbelnRdm
         },
         {
@@ -272,9 +272,9 @@ annotate service.OrderItemDetails with @(
     UI.SelectionFields : [
         Vkorg,
         Kunnr,
-        Matnr,
+        Kmeng,
         Datab,
-        Datbi
+        Datbi,
     ]
 );
 
@@ -285,7 +285,7 @@ annotate service.OrderItemDetails with @(
 );
 
 // Campos escondidos no Fiori UI
-annotate service.OrderItemDetails with {
-    Datab @UI.Hidden : true;
-    Datbi @UI.Hidden : true;
-};
+//annotate service.OrderItemDetails with {
+//    Matnr @UI.Hidden : true;
+//    Datbi @UI.Hidden : true;
+//};

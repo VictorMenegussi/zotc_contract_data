@@ -8,7 +8,7 @@ service OrderService {
 
 annotate OrderService.OrderItemDetails with{
     Arktx             ;
-    Kmeng              ;
+    Kmeng @title : 'Order Quantity'    ;
     Bstkd              ;
     Erdat              ;
     Fixmg              ;
@@ -22,17 +22,16 @@ annotate OrderService.OrderItemDetails with{
     VbelnSdr           ;
     VbelnRdm           ;
     Fkdat              ;
-    NetwrBilling        ;
+    NetwrBilling       ;
     WaerkBilling       ;
-    Belnr             ;
+    Belnr              ;
     NetwrAcc           ;
     WaerkAcc           ;
-    Datab             ;
-    Datbi             ;
-    Vbeln             ;
-    Posnr            ;
-    Vkorg         @title : 'Sales Organization' ;
-    Kunnr        @title : 'Customer Number'    ;
-    Matnr       @title : 'Material Number'      ;    
-
+    Datab @title : 'Valid From Date';
+    Datbi @title : 'Valid To Date';
+    Vbeln              ;
+    Posnr              ;
+    Vkorg @title : 'Sales Organization' ;
+    Kunnr @title : 'Sold To'    ;
+    Matnr @title : 'Material Number'  ;    
 };
