@@ -1,0 +1,4 @@
+{
+  "enable-xsuaa-support": true,
+  "authorities":["$ACCEPT_GRANTED_AUTHORITIES"]
+}

@@ -273,16 +273,27 @@ annotate service.OrderItemDetails with @(
         Vkorg,
         Kunnr,
         Kmeng,
-        Datab,
-        Datbi,
+        Erdat,
     ]
 );
-
+/*
 annotate service.OrderItemDetails with @(
     Capabilities.DeleteRestrictions : {
         Deletable : false
-    }
-);
+    },    
+    Capabilities.FilterRestrictions : {
+        FilterExpressionRestrictions : [
+            {
+                //Search-Term: #SemanticDateFilter
+                Property : 'Erdat',
+                AllowedExpressions : 'SingleRange' //Other option: SingleValue
+            },
+        ],
+        // RequiredProperties : [
+        //     stringProperty //Search-Term: #RequiredFilter    
+        // ]
+    },
+);*/
 
 // Campos escondidos no Fiori UI
 //annotate service.OrderItemDetails with {

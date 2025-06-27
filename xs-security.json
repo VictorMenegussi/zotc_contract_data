@@ -1,5 +1,11 @@
 {
-  "scopes": [],
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.jobScheduler",
+      "description": "Scope for job scheduler"
+    }
+  ],
   "attributes": [],
   "role-templates": []
 }

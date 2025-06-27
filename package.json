@@ -44,7 +44,7 @@
         "credentials": {
           "destination": "COIL_YIELD_ECC_EMEA",
           "path": "/sap/opu/odata/sap/ZOTC_CONTRACT_DATA_SRV",
-          "requestTimeout": 5000000 
+          "requestTimeout": 120000
         }
       },
       "connectivity": true, 
@@ -53,7 +53,7 @@
         "db": {
           "kind": "hana",
           "pool": {
-            "acquireTimeoutMillis": 10000
+            "acquireTimeoutMillis": 20000
           }
         },
         "auth": "xsuaa"
@@ -62,7 +62,7 @@
         "db": {
           "kind": "hana",
           "pool": {
-            "acquireTimeoutMillis": 10000
+            "acquireTimeoutMillis": 20000
           }
         },
         "auth": {
