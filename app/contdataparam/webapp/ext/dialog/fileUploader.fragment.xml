@@ -1,0 +1,18 @@
+<core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:u="sap.ui.unified">
+  <Dialog id="idFileUploaderFragment" title="Uploader" contentWidth="450px">
+    <content>
+      <VBox id="idFileUploaderFragmentBox" class="sapUiSmallMargin">
+        <u:FileUploader id="idMassCreateBomFileUploader" fileType="xlsx" class="sapUiSmallMarginTop"
+          maximumFileSize="10" placeholder="Select a file" useMultipart="false"
+          change="onFileChange"
+        />
+      </VBox>
+    </content>
+    <beginButton>
+      <Button id="idSendFileToBackend" text="Ok" press="onSendFileToBackend" type="Emphasized" />
+    </beginButton>
+    <endButton>
+      <Button id="idCancelUpload" text="Cancel" press="onDialogCancelButtonPress" />
+    </endButton>
+  </Dialog>
+</core:FragmentDefinition>

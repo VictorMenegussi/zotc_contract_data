@@ -1,10 +1,56 @@
 const cds = require('@sap/cds');
 
-module.exports = cds.service.impl (async function() {
+module.exports = cds.service.impl(async function () {
 
-    this.before('READ', 'OrderItemDetails', async (req) => {
+    this.before(['CREATE', 'UPDATE'], 'ContractDataParameters', async (req) => {
+        const { Vkorg, Kunnr } = req.data;
+        if (req.query.UPDATE) {
+            const serchId = await SELECT.one.from('ContractDataParameters').where({
+                ID: req.data.ID
+            })
+            if (serchId.Vkorg !== Vkorg || serchId.Kunnr !== Kunnr) {
+                const existingRecord = await SELECT.one.from('ContractDataParameters').where({
+                    Vkorg,
+                    Kunnr
+                })
+                if (existingRecord) {
+                    if (req.locale === 'pt') {
+                        req.error(409, 'Chave Duplicada');
+                    } else if (req.locale === 'es') {
+                        req.error(409, 'Clave Duplicada');
+                    } else if (req.locale === 'de') {
+                        req.error(409, 'Doppelter Schlüssel');
+                    } else if (req.locale === 'sv') {
+                        req.error(409, 'Duplicerad nyckel');
+                    } else {
+                        req.error(409, 'Duplicate Key');
+                    }
+                }
+            }
+        } else {
+            const existingRecord = await SELECT.one.from('ContractDataParameters').where({
+                Vkorg,
+                Kunnr
+            })
+            if (existingRecord) {
+                if (req.locale === 'pt') {
+                    req.error(409, 'Chave Duplicada');
+                } else if (req.locale === 'es') {
+                    req.error(409, 'Clave Duplicada');
+                } else if (req.locale === 'de') {
+                    req.error(409, 'Doppelter Schlüssel');
+                } else if (req.locale === 'sv') {
+                    req.error(409, 'Duplicerad nyckel');
+                } else {
+                    req.error(409, 'Duplicate Key');
+                }
+            }
 
-        if(req.query.SELECT.where) {
+        }
+    });
+
+    this.before('READ', 'OrderItemDetails', async (req) => {   
+        if (req.query.SELECT.where) {
             for (let i = 0; i < req.query.SELECT.where.length; i++) {
                 const condition = req.query.SELECT.where[i]
                 if (condition.ref && condition.ref[0] === 'Datab' && req.query.SELECT.where[i + 1] === '=') {
@@ -13,56 +59,89 @@ module.exports = cds.service.impl (async function() {
                 } else if (condition.ref && condition.ref[0] === 'Datbi' && req.query.SELECT.where[i + 1] === '=') {
                     req.query.SELECT.where[i + 1] = '>='
                     console.log(`Changing condition from '=' to '>=' for Datbi`)
-                } else if (condition.ref && condition.ref[0] === 'Vkorg' )     {
+                } else if (condition.ref && condition.ref[0] === 'Vkorg') {
                     console.log('Overwriting Vkorg condition to upper case')
                     if (req.query.SELECT.where[i + 2] && req.query.SELECT.where[i + 2].val) {
                         req.query.SELECT.where[i + 2].val = req.query.SELECT.where[i + 2].val.toUpperCase();
-                    }           
-                }      
+                    }
+                }
             }
         }
     })
 
+    this.on('UploadContractData', async (req) => {
+        let duplicates = []
+        let insert = []
+        let seen = new Set();
+        for (const item of req.data.contracts) {
+            const key = `${item.Vkorg}|${item.Kunnr}`
+            if (seen.has(key)) {
+                duplicates.push(item)
+            } else {
+                seen.add(key)
+                insert.push(item)
+            }
+        }
+        await cds.run(DELETE.from('ContractDataParameters'))
+        await cds.run(INSERT.into('ContractDataParameters').entries(insert))
+        if (duplicates.length > 0) {
+          return { message: 'Duplicates found and removed', duplicates }
+        }
+        return { message: 'Data Uploaded Successfully' }
+    })
+
     this.on('jobYearlyUpdate', async () => {
-        const today = new Date()
-        let start = new Date(today.getFullYear() - 1, today.getMonth(), 1)
-
-        for (let i = 0; i < 13; i++) {
-            let monthStart = new Date(start.getFullYear(), start.getMonth() + i, 1)
-            let monthEnd = new Date(monthStart.getFullYear(), monthStart.getMonth() + 1, 0)
-
-            let startString = monthStart.toISOString().split('T')[0] + 'T00:00:00'
-            let endString = monthEnd.toISOString().split('T')[0] + 'T00:00:00'
-
-            await updateByDateRange(startString, endString)
+        const parametros = await cds.run(SELECT.from('ContractDataParameters'))
+        for (const p of parametros) {
+            const vkorg = p.Vkorg
+            const kunnr = p.Kunnr
+            const erdat = p.Erdat + 'T00:00:00'
+            let days = 365
+            const initialDate = new Date()
+            initialDate.setDate(today.getDate() - days)
+            const startString = initialDate.toISOString().split('T')[0] + 'T00:00:00'
+            const endString = today.toISOString().split('T')[0] + 'T00:00:00'
+            await updateByDateRange(vkorg, kunnr, erdat, startString, endString)
         }
         return 'Yearly update completed'
     })
     this.on('jobMonthlyUpdate', async () => {
-        const today = new Date();
-        const thirtyOneDaysAgo = new Date();
-        thirtyOneDaysAgo.setDate(today.getDate() - 31);
-
-        const startString = thirtyOneDaysAgo.toISOString().split('T')[0] + 'T00:00:00';
-        const endString = today.toISOString().split('T')[0] + 'T00:00:00';
-
-        await updateByDateRange(startString, endString);
-
+        const parametros = await cds.run(SELECT.from('ContractDataParameters'))
+        for (const p of parametros) {
+            const vkorg = p.Vkorg
+            const kunnr = p.Kunnr
+            const erdat = p.Erdat + 'T00:00:00'
+            let days = 31
+            const today = new Date()
+            if (p.OneMonth) {
+                days = 31
+            } else {
+                days = p.Days || 31
+            }
+            const initialDate = new Date()
+            initialDate.setDate(today.getDate() - days)
+            const startString = initialDate.toISOString().split('T')[0] + 'T00:00:00'
+            const endString = today.toISOString().split('T')[0] + 'T00:00:00'
+            await updateByDateRange(vkorg, kunnr, erdat, startString, endString)
+        }
         return 'Monthly update completed';
     })
 
-    async function updateByDateRange(startDate, endDate) {
+    async function updateByDateRange(vkorg, kunnr, erdat, startDate, endDate) {
         const eccSRV = await cds.connect.to('zotc')
         const { ZOTC_CONTRACT_ATM_DATASet } = eccSRV.entities
         var timestamp1 = Date.now()
         console.log(`Processing: ${startDate} to ${endDate}`)
         let eccEntity = await eccSRV.run(SELECT.from(ZOTC_CONTRACT_ATM_DATASet).where({
+            Vkorg: vkorg,
+            Kunnr: kunnr,
+            Erdat: erdat,
             Datab: startDate,
             Datbi: endDate
         }))
         var timestamp2 = Date.now()
-        console.log(`ECC data selected in ${timestamp2 - timestamp1} ms`)   
-        console.log(`Number of records selected: ${eccEntity.length}`)     
+        console.log(`ECC data selected in ${timestamp2 - timestamp1} ms`)
+        console.log(`Number of records selected: ${eccEntity.length}`)
         let insert = eccEntity.map(item => ({
             Vbeln: item.Vbeln,
             Posnr: item.Posnr,
@@ -91,7 +170,7 @@ module.exports = cds.service.impl (async function() {
             WaerkAcc: item.WaerkAcc,
             Datab: new Date(item.Datab),
             Datbi: new Date(item.Datbi)
-        }))        
+        }))
         const { OrderItemDetails } = cds.entities
         await cds.run(UPSERT.into(OrderItemDetails).entries(insert))
         var timestamp3 = Date.now()

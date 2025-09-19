@@ -27,6 +27,7 @@
     "start": "cds-serve",
     "dev": "cds watch",
     "watch-getcontractatm": "cds watch --open getcontractatm/webapp/index.html?sap-ui-xx-viewCache=false",
+    "watch-contdataparam": "cds watch --open contdataparam/webapp/index.html?sap-ui-xx-viewCache=false",
     "undeploy": "cf undeploy ZOTC_GET_CONTRACT_ATM_DATA --delete-services --delete-service-keys --delete-service-brokers",
     "build": "mbt build --mtar archive",
     "deploy": "cf deploy mta_archives/archive.mtar --retries 0"
@@ -47,7 +48,7 @@
           "requestTimeout": 120000
         }
       },
-      "connectivity": true, 
+      "connectivity": true,
       "destinations": true,
       "[production]": {
         "db": {
@@ -78,6 +79,7 @@
     }
   },
   "sapux": [
-    "app/getcontractatm"
+    "app/getcontractatm",
+    "app/contdataparam"
   ]
 }

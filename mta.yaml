@@ -47,10 +47,25 @@ modules:
             - getcontractatm.zip
           name: getcontractatm
           target-path: resources/
+        - artifacts:
+            - contdataparam.zip
+          name: contdataparam
+          target-path: resources/
  
   - name: getcontractatm
     type: html5
     path: app/getcontractatm
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm install
+        - npm run build:cf
+      supported-platforms: []
+
+  - name: contdataparam
+    type: html5
+    path: app/contdataparam
     build-parameters:
       build-result: dist
       builder: custom
@@ -122,6 +137,13 @@ resources:
                 HTML5.DynamicDestination: true
                 HTML5.ForwardAuthToken: true
                 Name: getcontractatm
+                ProxyType: Internet
+                Type: HTTP
+                URL: https://~{srv-api/srv-url}
+              - Authentication: NoAuthentication
+                HTML5.DynamicDestination: true
+                HTML5.ForwardAuthToken: true
+                Name: contdataparam
                 ProxyType: Internet
                 Type: HTTP
                 URL: https://~{srv-api/srv-url}

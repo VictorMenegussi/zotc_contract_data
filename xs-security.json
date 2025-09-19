@@ -2,8 +2,9 @@
   "tenant-mode": "dedicated",
   "scopes": [
     {
-      "name": "$XSAPPNAME.jobScheduler",
-      "description": "Scope for job scheduler"
+      "name": "$XSAPPNAME.jobscheduler1",
+      "description": "Scope for job scheduler",
+      "grant-as-authority-to-apps": ["$XSSERVICENAME(ball-job-scheduler)"]
     }
   ],
   "attributes": [],
