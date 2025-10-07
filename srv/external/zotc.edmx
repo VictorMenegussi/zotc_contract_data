@@ -34,8 +34,26 @@
 <Property Name="Datab" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="DATAB" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 <Property Name="Datbi" Type="Edm.DateTime" Nullable="false" Precision="7" sap:unicode="false" sap:label="DATBI" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
 </EntityType>
+<EntityType Name="VkorgVH" sap:content-version="1">
+<Key>
+<PropertyRef Name="Spras"/>
+<PropertyRef Name="Vkorg"/>
+</Key>
+<Property Name="Spras" Type="Edm.String" Nullable="false" MaxLength="2" sap:unicode="false" sap:label="Language" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Vkorg" Type="Edm.String" Nullable="false" MaxLength="4" sap:unicode="false" sap:label="Sales Org." sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Vtext" Type="Edm.String" Nullable="false" MaxLength="20" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+</EntityType>
+<EntityType Name="KunnrVH" sap:content-version="1">
+<Key>
+<PropertyRef Name="Kunnr"/>
+</Key>
+<Property Name="Mcod1" Type="Edm.String" Nullable="false" MaxLength="25" sap:unicode="false" sap:label="Name" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+<Property Name="Kunnr" Type="Edm.String" Nullable="false" MaxLength="10" sap:unicode="false" sap:label="Customer" sap:creatable="false" sap:updatable="false" sap:sortable="false" sap:filterable="false"/>
+</EntityType>
 <EntityContainer Name="ZOTC_CONTRACT_DATA_SRV_Entities" m:IsDefaultEntityContainer="true" sap:supported-formats="atom json xlsx">
 <EntitySet Name="ZOTC_CONTRACT_ATM_DATASet" EntityType="ZOTC_CONTRACT_DATA_SRV.ZOTC_CONTRACT_ATM_DATA" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+<EntitySet Name="VkorgVHSet" EntityType="ZOTC_CONTRACT_DATA_SRV.VkorgVH" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
+<EntitySet Name="KunnrVHSet" EntityType="ZOTC_CONTRACT_DATA_SRV.KunnrVH" sap:creatable="false" sap:updatable="false" sap:deletable="false" sap:pageable="false" sap:content-version="1"/>
 </EntityContainer>
 <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="self" href="http://azsae1aap010.cs.ball.com:8001/sap/opu/odata/sap/ZOTC_CONTRACT_DATA_SRV/$metadata"/>
 <atom:link xmlns:atom="http://www.w3.org/2005/Atom" rel="latest-version" href="http://azsae1aap010.cs.ball.com:8001/sap/opu/odata/sap/ZOTC_CONTRACT_DATA_SRV/$metadata"/>

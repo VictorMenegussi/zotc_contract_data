@@ -276,27 +276,36 @@ annotate service.OrderItemDetails with @(
         Erdat,
     ]
 );
-// annotate service.OrderItemDetails with {
-//     @Common.ValueList: {
-//         CollectionPath: 'VkorgHelp',
-//         Parameters    : [
-//             {
-//                 $Type            : 'Common.ValueListParameterInOut',
-//                 LocalDataProperty: Vkorg,
-//                 ValueListProperty: 'Vkorg',
-//             }
-//         ]
-//     }
-//     Vkorg;
-//     @Common.ValueList: {
-//         CollectionPath: 'KunnrHelp',
-//         Parameters    : [
-//             {
-//                 $Type            : 'Common.ValueListParameterInOut',
-//                 LocalDataProperty: Kunnr,
-//                 ValueListProperty: 'Kunnr',
-//             }
-//         ]
-//     }
-//     Kunnr;
-// };
+
+annotate service.OrderItemDetails with {
+    @Common.ValueList: {
+        CollectionPath: 'VkorgHelp',
+        Parameters    : [
+            {
+                $Type            : 'Common.ValueListParameterInOut',
+                LocalDataProperty: Vkorg,
+                ValueListProperty: 'Vkorg',
+            },
+            {
+                $Type: 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty: 'Vtext'
+            }
+        ]
+    }
+    Vkorg;
+    @Common.ValueList: {
+        CollectionPath: 'KunnrHelp',
+        Parameters    : [
+            {
+                $Type            : 'Common.ValueListParameterInOut',
+                LocalDataProperty: Kunnr,
+                ValueListProperty: 'Kunnr',
+            },
+            {
+                $Type: 'Common.ValueListParameterDisplayOnly',
+                ValueListProperty: 'Mcod1'
+            }
+        ]
+    }
+    Kunnr;
+};

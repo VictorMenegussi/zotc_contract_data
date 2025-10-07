@@ -43,6 +43,17 @@ entity ContractDataParameters : cuid, managed {
     OneMonth : Boolean; // One month validity
 }
 
+entity VkorgHelp {
+    key Spras : String(2);
+    key Vkorg : String(4);
+        Vtext : String(20);
+}
+
+entity KunnrHelp {
+    key Kunnr : String(10);
+        Mcod1 : String(25);
+}
+
 // entity VkorgHelp as
 //     select from OrderItemDetails {
 //         key Vkorg as Vkorg : String(4)

@@ -1,4 +1,4 @@
-/* checksum : 3865963e0c860f1dc488b91a35337125 */
+/* checksum : 29924765f4736f91bf472cd29f48bf12 */
 @cds.external : true
 @m.IsDefaultEntityContainer : 'true'
 @sap.supported.formats : 'atom json xlsx'
@@ -213,5 +213,60 @@ entity zotc.ZOTC_CONTRACT_ATM_DATASet {
   @sap.sortable : 'false'
   @sap.filterable : 'false'
   Datbi : Timestamp not null;
+};
+
+@cds.external : true
+@cds.persistence.skip : true
+@sap.creatable : 'false'
+@sap.updatable : 'false'
+@sap.deletable : 'false'
+@sap.pageable : 'false'
+@sap.content.version : '1'
+entity zotc.VkorgVHSet {
+  @sap.unicode : 'false'
+  @sap.label : 'Language'
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.sortable : 'false'
+  @sap.filterable : 'false'
+  key Spras : String(2) not null;
+  @sap.unicode : 'false'
+  @sap.label : 'Sales Org.'
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.sortable : 'false'
+  @sap.filterable : 'false'
+  key Vkorg : String(4) not null;
+  @sap.unicode : 'false'
+  @sap.label : 'Name'
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.sortable : 'false'
+  @sap.filterable : 'false'
+  Vtext : String(20) not null;
+};
+
+@cds.external : true
+@cds.persistence.skip : true
+@sap.creatable : 'false'
+@sap.updatable : 'false'
+@sap.deletable : 'false'
+@sap.pageable : 'false'
+@sap.content.version : '1'
+entity zotc.KunnrVHSet {
+  @sap.unicode : 'false'
+  @sap.label : 'Customer'
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.sortable : 'false'
+  @sap.filterable : 'false'
+  key Kunnr : String(10) not null;
+  @sap.unicode : 'false'
+  @sap.label : 'Name'
+  @sap.creatable : 'false'
+  @sap.updatable : 'false'
+  @sap.sortable : 'false'
+  @sap.filterable : 'false'
+  Mcod1 : String(25) not null;
 };
 

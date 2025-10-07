@@ -12,12 +12,15 @@ service OrderService
 {
     entity OrderItemDetails       as projection on db.OrderItemDetails;
     entity ContractDataParameters as projection on db.ContractDataParameters;
+    entity VkorgHelp               as projection on db.VkorgHelp;
+    entity KunnrHelp               as projection on db.KunnrHelp;
     // entity VkorgHelp             as projection on db.VkorgHelp;
     // entity KunnrHelp             as projection on db.KunnrHelp;
 
     function jobMonthlyUpdate()                                      returns String;
     function jobYearlyUpdate()                                       returns String;
     action   UploadContractData(contracts: array of ObjContractData) returns String;
+    function PopulateValueHelp()                                     returns String;
 }
 
 annotate OrderService.OrderItemDetails with {
@@ -56,4 +59,17 @@ annotate OrderService.ContractDataParameters with @odata.draft.enabled {
     Erdat    @title: 'Doc Date Limit';
     Days     @title: 'Valid Days';
     OneMonth @title: 'One Month Range';
+};
+
+annotate OrderService.VkorgHelp with {
+  @title: 'Sales Org'
+  Vkorg;
+  @title: 'Description'
+  Vtext;
+};
+annotate OrderService.KunnrHelp with {
+  @title: 'Customer'
+  Kunnr;
+  @title: 'Description'
+  Mcod1;
 };
