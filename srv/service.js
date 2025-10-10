@@ -1,18 +1,24 @@
 const cds = require('@sap/cds');
+const { SELECT } = require('@sap/cds/lib/ql/cds-ql');
 
 module.exports = cds.service.impl(async function () {
+
+    this.on('DELETE', 'ContractDataParameters', async (req, list) => {
+        const id = req.data.ID
+        const sel = await SELECT.one.from('ContractDataParameters').where({ ID: id })
+        let vkorg = sel.Vkorg
+        let kunnr = sel.Kunnr
+        console.log(`Deleting related OrderItemDetails for Vkorg: ${vkorg}, Kunnr: ${kunnr}`)
+        await cds.run(`DELETE FROM CONTRACT_ATM_ORDERITEMDETAILS WHERE VKORG='${vkorg}' AND KUNNR='${kunnr}'`)
+        return cds.run(req.query)
+    })
 
     this.before(['CREATE', 'UPDATE'], 'ContractDataParameters', async (req) => {
         const { Vkorg, Kunnr } = req.data;
         if (req.query.UPDATE) {
-            const serchId = await SELECT.one.from('ContractDataParameters').where({
-                ID: req.data.ID
-            })
+            const serchId = await SELECT.one.from('ContractDataParameters').where({ ID: req.data.ID })
             if (serchId.Vkorg !== Vkorg || serchId.Kunnr !== Kunnr) {
-                const existingRecord = await SELECT.one.from('ContractDataParameters').where({
-                    Vkorg,
-                    Kunnr
-                })
+                const existingRecord = await SELECT.one.from('ContractDataParameters').where({Vkorg,Kunnr})
                 if (existingRecord) {
                     if (req.locale === 'pt') {
                         req.error(409, 'Chave Duplicada');
@@ -72,7 +78,9 @@ module.exports = cds.service.impl(async function () {
     this.on('UploadContractData', async (req) => {
         let duplicates = []
         let insert = []
-        let seen = new Set();
+        let seen = new Set()
+        let deletedKeys = new Set()
+        let oldData = await cds.run(SELECT.from('ContractDataParameters'))
         for (const item of req.data.contracts) {
             const key = `${item.Vkorg}|${item.Kunnr}`
             if (seen.has(key)) {
@@ -82,8 +90,26 @@ module.exports = cds.service.impl(async function () {
                 insert.push(item)
             }
         }
+        for (const old of oldData) {
+            const key = `${old.Vkorg}|${old.Kunnr}`
+            if (!seen.has(key)) {
+                deletedKeys.add(key)
+            }
+        }
         await cds.run(DELETE.from('ContractDataParameters'))
         await cds.run(INSERT.into('ContractDataParameters').entries(insert))
+        if (deletedKeys.size > 0) {
+            deleteKeysString = ''
+            firstIteration = true
+            deletedKeys.forEach(async (key) => {
+                if (!firstIteration) {
+                    deleteKeysString += ','
+                }
+                firstIteration = false
+                deleteKeysString += `'${key}'`
+            })
+            await cds.run(`DELETE FROM CONTRACT_ATM_ORDERITEMDETAILS WHERE CONCAT(CONCAT(VKORG,'|'),KUNNR) IN (${deleteKeysString})`)
+        }
         if (duplicates.length > 0) {
             return { message: 'Duplicates found and removed', duplicates }
         }
@@ -129,13 +155,13 @@ module.exports = cds.service.impl(async function () {
             const startString = initialDate.toISOString().split('T')[0] + 'T00:00:00'
             const endString = today.toISOString().split('T')[0] + 'T00:00:00'
             try {
-                await updateByDateRange(vkorg, kunnr, erdat, startString, endString)
+                updateByDateRange(vkorg, kunnr, erdat, startString, endString)
             } catch (error) {
                 console.log(`Problem Vkorg: ${p.Vkorg}, Kunnr: ${p.Kunnr} Erdat: ${p.Erdat} Start: ${startString} End: ${endString}`)
                 console.log('Error logging parameters:', error)
             }
         }
-        return 'Monthly update completed';
+        return 'Update running in background';
     })
 
     this.on('PopulateValueHelp', async (req) => {
@@ -148,6 +174,32 @@ module.exports = cds.service.impl(async function () {
         await cds.run(DELETE.from('KunnrHelp'))
         await cds.run(INSERT.into('KunnrHelp').entries(kunnr))
         return 'ok'
+    })
+
+    this.on('READ', ['VkorgHelp'], async (req) => {
+        result = await cds.run(req.query)
+        if (req.query.SELECT.search && result.length == 0) {
+            result.push({ Vkorg: req.query.SELECT.search[0].val })
+        }
+        return result
+    })
+
+    this.on('READ', ['KunnrHelp'], async (req) => {
+        result = await cds.run(req.query)
+        if (req.query.SELECT.search && result.length == 0) {
+            result.push({ Kunnr: req.query.SELECT.search[0].val })
+        } else if (req.query.SELECT.search) {
+            let exists = false
+            for (const r of result) {
+                if (r.Kunnr === req.query.SELECT.search[0].val) {
+                    exists = true
+                }
+            }
+            if (!exists) {
+                result.push({ Kunnr: req.query.SELECT.search[0].val })
+            }
+        }
+        return result
     })
 
     async function updateByDateRange(vkorg, kunnr, erdat, startDate, endDate) {
@@ -201,6 +253,7 @@ module.exports = cds.service.impl(async function () {
         }))
         const { OrderItemDetails } = cds.entities
         await cds.run(UPSERT.into(OrderItemDetails).entries(insert))
+        await cds.run(`DELETE FROM CONTRACT_ATM_ORDERITEMDETAILS WHERE VKORG='${vkorg}' AND KUNNR='${kunnr}' AND ERDAT<'${erdat.split('T')[0]}'`)
         var timestamp3 = Date.now()
         console.log(`Data inserted in ${timestamp3 - timestamp2} ms`)
         return 'Data update completed'

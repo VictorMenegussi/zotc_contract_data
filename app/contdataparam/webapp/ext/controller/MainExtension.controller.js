@@ -17,19 +17,100 @@ sap.ui.define([
     const PAGE_ID = 'contdataparam::ContractDataParametersList--fe';
     const TABLE_ID = PAGE_ID + '::table::ContractDataParameters::LineItem';
     const BUTTON_ID = TABLE_ID + '::CustomAction::upload';
+    const UPD_BUT_ID = PAGE_ID + '::CustomAction::runBackGroundUpdate';
+    const VH_BUT_ID = PAGE_ID + '::CustomAction::runHelperUpdate';
 
-    console.log('netproduction.ext.controller.MainExtension.js loaded')
 
     let _files = [];
 
-    return ControllerExtension.extend('netproduction.ext.controller.MainExtension', {
+    return ControllerExtension.extend('contdataparam.ext.controller.MainExtension', {
         override: {
             onAfterRendering: function () {
                 const api = this.base.getExtensionAPI();
                 const oView = api._view;
                 const oUploadButton = oView.byId(BUTTON_ID);
+                oUploadButton.setIcon('sap-icon://excel-attachment');
                 oUploadButton.attachPress(this.onUploadFile.bind(this));
+
+                const oUpdateButton = oView.byId(UPD_BUT_ID);
+                oUpdateButton.setIcon('sap-icon://action');
+                oUpdateButton.attachPress(this.onUpdateButton.bind(this));
+
+                const oVhUpdateButton = oView.byId(VH_BUT_ID);
+                oVhUpdateButton.setIcon('sap-icon://action');
+                oVhUpdateButton.attachPress(this.onVhUpdateButton.bind(this));
             }
+        },
+
+        onUpdateButton: function () {
+            const serviceUrl = this.getView().getModel().sServiceUrl
+
+            //const serviceUrl = this.getView().getModel().aBindings[0].oModel.sServiceUrl
+            console.log('serviceUrl', serviceUrl)
+
+            const busyDialog = new sap.m.BusyDialog({
+                title: "Processing",
+                text: "Please wait...",
+                showCancelButton: false
+            });
+            busyDialog.open();
+
+            fetch(serviceUrl + 'jobMonthlyUpdate()', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(async (response) => {
+                    console.log('Response from Update Action', response);
+                    const body = await response.json();
+                    if (!response.ok) { throw body.error; }
+                    MessageBox.success("Update running in background")
+                    const oTable = this.getView().byId(TABLE_ID);
+                    const oBinding = oTable.getRowBinding();
+                    oBinding?.refresh();
+                })
+                .catch(error => {
+                    console.error('raise error', error);
+                    MessageBox.error("Something went wrong. Please try again.")
+                })
+                .finally(() => {
+                    busyDialog.close();
+                });
+
+        },
+        onVhUpdateButton: function () {
+            const serviceUrl = this.getView().getModel().sServiceUrl
+
+            //const serviceUrl = this.getView().getModel().aBindings[0].oModel.sServiceUrl
+            console.log('serviceUrl', serviceUrl)
+
+            const busyDialog = new sap.m.BusyDialog({
+                title: "Processing",
+                text: "Please wait...",
+                showCancelButton: false
+            });
+            busyDialog.open();
+
+            fetch(serviceUrl + 'PopulateValueHelp()', {
+                method: 'GET',
+                headers: { 'Content-Type': 'application/json' }
+            })
+                .then(async (response) => {
+                    console.log('Response from Update Action', response);
+                    const body = await response.json();
+                    if (!response.ok) { throw body.error; }
+                    MessageBox.success("Operation completed successfully!")
+                    const oTable = this.getView().byId(TABLE_ID);
+                    const oBinding = oTable.getRowBinding();
+                    oBinding?.refresh();
+                })
+                .catch(error => {
+                    console.error('raise error', error);
+                    MessageBox.error("Something went wrong. Please try again.")
+                })
+                .finally(() => {
+                    busyDialog.close();
+                });
+
         },
         onUploadFile: function () {
             const oView = this.getView();
@@ -68,6 +149,8 @@ sap.ui.define([
                 let duplicates = []
                 let seen = new Set()
                 for (let i = 1; i < rows.length; i++) {
+                    if (rows[i].length === 0) continue
+                    console.log('Row:', rows[i])
                     const row = rows[i]
                     const key = `${row[0].toString()}|${row[1].toString()}`
                     if (seen.has(key)) {

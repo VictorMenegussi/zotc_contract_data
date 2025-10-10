@@ -5,9 +5,15 @@ sap.ui.define([
 ], function (MessageToast, Message, Messaging, PDFViewer, CodeEditor) {
   "use strict";
 
-  return {    
+  return {  
+    runBackGroundUpdate: function(oEvent) {
+      console.log("running background update...");
+    },  
+    runHelperUpdate: function(oEvent) {
+      console.log("running background update...");
+    }, 
     uploadData: function(oEvent) {
         console.log("Upload Data action triggered");
-    }    
+    }
   }
 })

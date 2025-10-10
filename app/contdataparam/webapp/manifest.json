@@ -123,6 +123,24 @@
                   }
                 }
               },
+              "content": {
+                "header": {
+                  "actions" : {
+                    "runBackGroundUpdate": {
+                      "press": "contdataparam.ext.controller.CustomActions.runBackGroundUpdate",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Update Main Report"
+                    },
+                    "runHelperUpdate": {
+                      "press": "contdataparam.ext.controller.CustomActions.runHelperUpdate",
+                      "visible": true,
+                      "enabled": true,
+                      "text": "Update Value Help"
+                    }
+                  }
+                }
+              },
               "controlConfiguration": {
                 "@com.sap.vocabularies.UI.v1.LineItem": {
                   "tableSettings": {
